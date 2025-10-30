@@ -31,16 +31,16 @@
 
     <!-- ============== POLICES & STYLES ============== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --background-color: #12121c;
             --primary-color: #1c1c28;
             --text-color: #E0E0E0;
             --accent-color: #9D4EDD;
-            --accent-color-hover: #b182ff; /* === CORRECTION : Couleur de survol adoucie === */
+            --accent-color-hover: #b182ff;
             --box-shadow-color: rgba(157, 78, 221, 0.2);
             --box-shadow-color-focus: rgba(157, 78, 221, 0.5);
         }
@@ -135,7 +135,6 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            /* === NOUVEAU : Ajout de l'ombre portée === */
             box-shadow: 0 4px 20px rgba(0,0,0,0.25);
         }
         .service-detail-card::before {
@@ -151,7 +150,6 @@
         .service-detail-card:hover { 
             transform: translateY(-8px) scale(1.02); 
             border-color: transparent;
-            /* === NOUVEAU : Ombre portée plus intense au survol === */
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         }
         .service-detail-card:hover::before { 
@@ -169,7 +167,6 @@
             height: 28px;
             flex-shrink: 0;
             margin-top: 5px;
-            /* === CORRECTION : Couleur de l'icône contrôlée par CSS === */
             color: var(--accent-color);
             transition: color 0.3s ease;
         }
@@ -180,7 +177,6 @@
             font-weight: 700;
             transition: color 0.3s ease;
         }
-        /* === NOUVEAU : Changement de couleur au survol === */
         .service-detail-card:hover .card-icon,
         .service-detail-card:hover h3 {
             color: var(--accent-color-hover);
@@ -209,152 +205,232 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px var(--box-shadow-color-focus); }
         
         .footer { background-color: var(--primary-color); text-align: center; padding: 40px 0; border-top: 1px solid rgba(255, 255, 255, 0.05);}
+   
+        /* === NOUVEAU : STYLE DE LA NOTIFICATION === */
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 16px 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            z-index: 2000;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            background-color: #e74c3c; /* Rouge pour les erreurs */
+        }
     </style>
 </head>
 <body>
-    
-    <div id="tsparticles"></div>
 
-    <div class="page-content">
-        <header>
-            <nav class="navbar">
-                <a href="#home" class="logo">Vlenz<span>.</span></a>
-                <ul class="nav-links">
-                    <li><a href="#home">Accueil</a></li>
-                    <li><a href="#services">Nos Services</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+<div id="tsparticles"></div>
 
-        <main>
-            <section id="home">
-                <div class="container">
-                    <div class="hero-content">
-                        <div class="hero-text">
-                            <h1>Valorisons ensemble votre savoir-faire.</h1>
-                            <p>Nous créons des sites web modernes et performants pour les entrepreneurs, artisans et indépendants qui veulent transformer leur présence en ligne.</p>
-                            <div class="hero-cta">
-                                <a href="#contact" class="btn btn-primary">Obtenir un devis gratuit</a>
-                                <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<div class="page-content">
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="logo">Vlenz<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#services">Nos Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-            <section id="services">
-                <div class="container">
-                    <h2>Nos Prestations</h2>
-                    <div class="services-grid">
-                        <div class="service-detail-card">
-                            <div class="card-header">
-                                <!-- === CORRECTION : Stroke de l'icône réglé sur "currentColor" === -->
-                                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                                <h3>Site Vitrine sur mesure</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>L'outil indispensable pour asseoir votre crédibilité. Nous créons un site unique qui vous ressemble, optimisé pour tous les écrans.</p>
-                            </div>
-                            <div class="card-footer">
-                                <p><strong>Inclus :</strong> Design personnalisé, 3 à 5 pages, formulaire de contact, intégration de vos contenus.</p>
-                            </div>
-                        </div>
-
-                        <div class="service-detail-card">
-                            <div class="card-header">
-                                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <h3>Référencement Local (SEO)</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Soyez trouvé par des clients près de chez vous. Idéal pour les artisans et services de proximité. Nous optimisons votre site et votre fiche Google.</p>
-                            </div>
-                            <div class="card-footer">
-                                <p><strong>Inclus :</strong> Optimisation mots-clés locaux, création fiche Google, inscription annuaires.</p>
-                            </div>
-                        </div>
-
-                        <div class="service-detail-card">
-                            <div class="card-header">
-                                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                                <h3>Maintenance & Sécurité</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Concentrez-vous sur votre métier, nous nous occupons de la technique. Un site web demande un entretien régulier pour rester performant et sécurisé.</p>
-                            </div>
-                            <div class="card-footer">
-                                <p><strong>Inclus :</strong> Mises à jour, sauvegardes, surveillance sécurité, support.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact">
-                <div class="container">
-                    <h2>Contactez-nous</h2>
-                    <div class="contact-content">
-                        <form class="contact-form">
-                            <p style="margin-bottom:20px;">Une question, un projet ? Remplissez ce formulaire et nous reviendrons vers vous au plus vite.</p>
-                            <div class="form-group"><label for="name">Votre Nom</label><input type="text" id="name" name="name" required></div>
-                            <div class="form-group"><label for="email">Votre Email</label><input type="email" id="email" name="email" required></div>
-                            <div class="form-group"><label for="subject">Sujet</label><input type="text" id="subject" name="subject" required></div>
-                            <div class="form-group"><label for="message">Votre Message</label><textarea id="message" name="message" rows="5" required></textarea></div>
-                            <button type="submit" class="btn btn-primary">Envoyer le Message</button>
-                        </form>
-                        <div class="contact-info">
-                            <h3>Nos Coordonnées</h3>
-                            <p>N'hésitez pas à nous joindre directement :</p>
-                            <p><strong>Email :</strong><br> contact@vlenz.fr</p>
-                            <p><strong>Téléphone :</strong><br> 06 95 41 43 86</p>
-                            <p>Basés à Combs-la-Ville, nous travaillons avec des entrepreneurs partout en France.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
+    <main>
+        <section id="home">
             <div class="container">
-                <p>&copy; 2025 Vlenz. Tous droits réservés.</p>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Valorisons ensemble votre savoir-faire.</h1>
+                        <p>Nous créons des sites web modernes et performants pour les entrepreneurs, artisans et indépendants qui veulent transformer leur présence en ligne.</p>
+                        <div class="hero-cta">
+                            <a href="#contact" class="btn btn-primary">Obtenir un devis gratuit</a>
+                            <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </footer>
-    </div>
-    
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            tsParticles.load("tsparticles", {
-                fpsLimit: 60,
-                interactivity: { events: { onHover: { enable: true, mode: "grab" }, onClick: { enable: false } }, modes: { grab: { distance: 150, links: { opacity: 0.3 } } } },
-                particles: { 
-                    color: { value: "#9D4EDD" }, 
-                    links: { color: "#9D4EDD", distance: 150, enable: true, opacity: 0.1, width: 1 }, 
-                    collisions: { enable: false }, 
-                    move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: true, speed: 1, straight: false }, 
-                    number: { density: { enable: true, area: 800 }, value: 50 }, 
-                    opacity: { value: { min: 0.1, max: 0.3 } }, 
-                    shape: { type: "circle" }, 
-                    size: { value: { min: 1, max: 3 } } 
-                },
-                detectRetina: true
-            });
+        </section>
 
-            const sr = ScrollReveal({
-                distance: '60px',
-                duration: 2500,
-                delay: 400,
-                reset: false,
-            });
+        <section id="services">
+            <div class="container">
+                <h2>Nos Prestations</h2>
+                <div class="services-grid">
+                    <div class="service-detail-card">
+                        <div class="card-header">
+                            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            <h3>Site Vitrine sur mesure</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>L'outil indispensable pour asseoir votre crédibilité. Nous créons un site unique qui vous ressemble, optimisé pour tous les écrans.</p>
+                        </div>
+                        <div class="card-footer">
+                            <p><strong>Inclus :</strong> Design personnalisé, 3 à 5 pages, formulaire de contact, intégration de vos contenus.</p>
+                        </div>
+                    </div>
 
-            sr.reveal('h1, .hero-text p, .hero-cta', { delay: 200, origin: 'top' });
-            sr.reveal('h2', { origin: 'top' });
-            sr.reveal('.service-detail-card', { origin: 'bottom', interval: 200 });
-            sr.reveal('.contact-form', { origin: 'left' });
-            sr.reveal('.contact-info', { origin: 'right' });
+                    <div class="service-detail-card">
+                        <div class="card-header">
+                            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <h3>Référencement Local (SEO)</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Soyez trouvé par des clients près de chez vous. Idéal pour les artisans et services de proximité. Nous optimisons votre site et votre fiche Google.</p>
+                        </div>
+                        <div class="card-footer">
+                            <p><strong>Inclus :</strong> Optimisation mots-clés locaux, création fiche Google, inscription annuaires.</p>
+                        </div>
+                    </div>
+
+                    <div class="service-detail-card">
+                        <div class="card-header">
+                            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                            <h3>Maintenance & Sécurité</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Concentrez-vous sur votre métier, nous nous occupons de la technique. Un site web demande un entretien régulier pour rester performant et sécurisé.</p>
+                        </div>
+                        <div class="card-footer">
+                            <p><strong>Inclus :</strong> Mises à jour, sauvegardes, surveillance sécurité, support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contactez-nous</h2>
+                <div class="contact-content">
+                    <!-- === NOUVEAU : Ajout d'un ID au formulaire === -->
+                    <form id="contact-form" class="contact-form" action="https://formspree.io/f/xkgpvyad" method="POST">
+                        <p style="margin-bottom:20px;">Une question, un projet ? Remplissez ce formulaire et nous reviendrons vers vous au plus vite.</p>
+                        <div class="form-group"><label for="name">Votre Nom</label><input type="text" id="name" name="name" required></div>
+                        <div class="form-group"><label for="email">Votre Email</label><input type="email" id="email" name="email" required></div>
+                        <div class="form-group"><label for="subject">Sujet</label><input type="text" id="subject" name="subject" required></div>
+                        <div class="form-group"><label for="message">Votre Message</label><textarea id="message" name="message" rows="5" required></textarea></div>
+                        <button type="submit" class="btn btn-primary">Envoyer le Message</button>
+                    </form>
+                    <div class="contact-info">
+                        <h3>Nos Coordonnées</h3>
+                        <p>N'hésitez pas à nous joindre directement :</p>
+                        <p><strong>Email :</strong><br> contact@vlenz.fr</p>
+                        <p><strong>Téléphone :</strong><br> 06 95 41 43 86</p>
+                        <p>Basés à Combs-la-Ville, nous travaillons avec des entrepreneurs partout en France.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Vlenz. Tous droits réservés.</p>
+        </div>
+    </footer>
+</div>
+
+<!-- === NOUVEAU : DIV pour la notification === -->
+<div id="notification" class="notification"></div>
+
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // --- Code pour les particules et ScrollReveal (inchangé) ---
+        tsParticles.load("tsparticles", {
+            fpsLimit: 60,
+            interactivity: { events: { onHover: { enable: true, mode: "grab" }, onClick: { enable: false } }, modes: { grab: { distance: 150, links: { opacity: 0.3 } } } },
+            particles: { 
+                color: { value: "#9D4EDD" }, 
+                links: { color: "#9D4EDD", distance: 150, enable: true, opacity: 0.1, width: 1 }, 
+                collisions: { enable: false }, 
+                move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: true, speed: 1, straight: false }, 
+                number: { density: { enable: true, area: 800 }, value: 50 }, 
+                opacity: { value: { min: 0.1, max: 0.3 } }, 
+                shape: { type: "circle" }, 
+                size: { value: { min: 1, max: 3 } } 
+            },
+            detectRetina: true
         });
-    </script>
+
+        const sr = ScrollReveal({
+            distance: '60px',
+            duration: 2500,
+            delay: 400,
+            reset: false,
+        });
+
+        sr.reveal('h1, .hero-text p, .hero-cta', { delay: 200, origin: 'top' });
+        sr.reveal('h2', { origin: 'top' });
+        sr.reveal('.service-detail-card', { origin: 'bottom', interval: 200 });
+        sr.reveal('.contact-form', { origin: 'left' });
+        sr.reveal('.contact-info', { origin: 'right' });
+
+        // --- NOUVEAU : SCRIPT POUR LE FORMULAIRE DE CONTACT ---
+        const form = document.getElementById('contact-form');
+        const notification = document.getElementById('notification');
+
+        async function handleSubmit(event) {
+            event.preventDefault(); // On empêche la redirection
+            const data = new FormData(event.target);
+
+            try {
+                const response = await fetch(event.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Afficher la notification de succès
+                    notification.textContent = "Message envoyé avec succès !";
+                    notification.classList.remove('error');
+                    notification.classList.add('show');
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 4000); // Cacher après 4 secondes
+                    form.reset(); // Vider le formulaire
+                } else {
+                    // Afficher une notification d'erreur
+                    notification.textContent = "Une erreur s'est produite.";
+                    notification.classList.add('error');
+                    notification.classList.add('show');
+                     setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 5000); // Cacher après 5 secondes
+                }
+            } catch (error) {
+                // Gérer les erreurs réseau
+                notification.textContent = "Une erreur réseau est survenue.";
+                notification.classList.add('error');
+                notification.classList.add('show');
+                 setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        form.addEventListener("submit", handleSubmit);
+    });
+</script>
 </body>
 </html>
