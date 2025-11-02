@@ -23,8 +23,7 @@
     <meta name="twitter:image" content="https://www.vlenz.fr/images/twitter-image.jpg">
 
     <!-- ============== FAVICONS ET THEME ============== -->
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./Logo/Logo_V.png" type="image/png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#9D4EDD">
@@ -60,17 +59,8 @@
             line-height: 1.7;
         }
 
-        /* STYLE POUR LES PARTICULES EN FOND */
-        #tsparticles { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 0; /* Assure que c'est en arrière-plan */
-        }
-
-        .page-content { position: relative; z-index: 1; /* Place le contenu au-dessus des particules */ }
+        #tsparticles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .page-content { position: relative; z-index: 1; }
         .container { max-width: 1100px; margin: auto; padding: 0 20px; overflow: hidden; }
         h1, h2, h3 { color: #FFFFFF; font-weight: 700; }
         h2 { font-size: 2.8rem; text-align: center; margin-bottom: 5rem; position: relative; }
@@ -101,8 +91,7 @@
         #home { 
             height: 100vh; 
             display: flex; 
-            align-items: center; 
-            text-align: center;
+            align-items: center;
         }
         h1 { 
             font-size: 4rem; 
@@ -115,15 +104,66 @@
             background-clip: text;
             color: transparent;
         }
-        .hero-text { max-width: 800px; margin: auto; }
+        
         .hero-text p { font-size: 1.2rem; margin-bottom: 3rem; color: #b0b0c0; }
-        .hero-cta { display: flex; gap: 20px; justify-content: center; }
+        
 
+        /* === NOUVEAUX STYLES POUR L'ACCUEIL === */
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .hero-logo {
+            flex-basis: 200px;
+            flex-shrink: 0;
+            animation: float-effect 6s ease-in-out infinite;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+        }
+
+        .hero-text {
+            text-align: left;
+            flex-basis: 600px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        @keyframes float-effect {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* AJUSTEMENTS POUR MOBILE */
         @media (max-width: 768px) { 
             #home { height: auto; padding: 150px 0; }
             h1 { font-size: 3rem; }
             .hero-text p { font-size: 1.1rem; }
-            .hero-cta { flex-direction: column; align-items: center; }
+            
+            .hero-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         .services-grid {
@@ -245,7 +285,6 @@
 </head>
 <body>
 
-<!-- ============== 1. LE CONTENEUR POUR LES PARTICULES ============== -->
 <div id="tsparticles"></div>
 
 <div class="page-content">
@@ -264,6 +303,9 @@
         <section id="home">
             <div class="container">
                 <div class="hero-content">
+                    <div class="hero-logo">
+                        <img src="./Logo/Logo_V.png" alt="Logo Vlenz">
+                    </div>
                     <div class="hero-text">
                         <h1>Valorisons ensemble votre savoir-faire.</h1>
                         <p>Nous créons des sites web modernes et performants pour les entrepreneurs, artisans et indépendants qui veulent transformer leur présence en ligne.</p>
@@ -337,7 +379,7 @@
                     <div class="contact-info">
                         <h3>Nos Coordonnées</h3>
                         <p>N'hésitez pas à nous joindre directement :</p>
-                        <p><strong>Email :</strong><br> contact@vlenz.fr</p>
+                        <p><strong>Email :</strong><br> contact.vlenz@gmail.com</p>
                         <p><strong>Téléphone :</strong><br> 06 95 41 43 86</p>
                         <p>Basés à Combs-la-Ville, nous travaillons avec des entrepreneurs partout en France.</p>
                     </div>
@@ -356,24 +398,14 @@
 <div id="notification" class="notification"></div>
 
 <script src="https://unpkg.com/scrollreveal"></script>
-<!-- ============== 2. CHARGEMENT DE LA LIBRAIRIE DES PARTICULES ============== -->
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         
-        // ============== 3. CONFIGURATION ET INITIALISATION DES PARTICULES ==============
         tsParticles.load("tsparticles", {
             fpsLimit: 60,
-            interactivity: { 
-                events: { 
-                    onHover: { enable: true, mode: "grab" }, 
-                    onClick: { enable: false } 
-                }, 
-                modes: { 
-                    grab: { distance: 150, links: { opacity: 0.3 } } 
-                } 
-            },
+            interactivity: { events: { onHover: { enable: true, mode: "grab" }, onClick: { enable: false } }, modes: { grab: { distance: 150, links: { opacity: 0.3 } } } },
             particles: { 
                 color: { value: "#9D4EDD" }, 
                 links: { color: "#9D4EDD", distance: 150, enable: true, opacity: 0.1, width: 1 }, 
@@ -387,7 +419,7 @@
             detectRetina: true
         });
 
-        // --- Code pour ScrollReveal (inchangé) ---
+        // --- Code pour ScrollReveal (MODIFIÉ) ---
         const sr = ScrollReveal({
             distance: '60px',
             duration: 2500,
@@ -395,7 +427,11 @@
             reset: false,
         });
 
-        sr.reveal('h1, .hero-text p, .hero-cta', { delay: 200, origin: 'top' });
+        // Le logo arrive de la gauche
+        sr.reveal('.hero-logo', { delay: 500, origin: 'left' });
+        // Le texte arrive de la droite
+        sr.reveal('.hero-text', { delay: 600, origin: 'right' });
+
         sr.reveal('h2', { origin: 'top' });
         sr.reveal('.service-detail-card', { origin: 'bottom', interval: 200 });
         sr.reveal('.contact-form', { origin: 'left' });
@@ -413,34 +449,24 @@
                 const response = await fetch(event.target.action, {
                     method: form.method,
                     body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' }
                 });
 
                 if (response.ok) {
                     notification.textContent = "Message envoyé avec succès !";
                     notification.classList.remove('error');
                     notification.classList.add('show');
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                    }, 4000);
+                    setTimeout(() => { notification.classList.remove('show'); }, 4000);
                     form.reset();
                 } else {
                     notification.textContent = "Une erreur s'est produite.";
-                    notification.classList.add('error');
-                    notification.classList.add('show');
-                     setTimeout(() => {
-                        notification.classList.remove('show');
-                    }, 5000);
+                    notification.classList.add('error', 'show');
+                     setTimeout(() => { notification.classList.remove('show'); }, 5000);
                 }
             } catch (error) {
                 notification.textContent = "Une erreur réseau est survenue.";
-                notification.classList.add('error');
-                notification.classList.add('show');
-                 setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
+                notification.classList.add('error', 'show');
+                 setTimeout(() => { notification.classList.remove('show'); }, 5000);
             }
         }
 
