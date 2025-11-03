@@ -56,7 +56,6 @@
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
             line-height: 1.7;
-            /* La couleur de fond est retirée d'ici pour que les particules soient visibles */
         }
 
         #tsparticles { 
@@ -65,13 +64,15 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            z-index: 0; /* Reste en arrière-plan */
+            z-index: 0; 
         }
+        
         .page-content { 
             position: relative; 
-            z-index: 1; /* Se place au-dessus des particules */
-            background-color: var(--background-color); /* La couleur de fond est appliquée ici */
+            z-index: 1; 
+            background-color: var(--background-color); 
         }
+        
         .container { max-width: 1100px; margin: auto; padding: 0 20px; overflow: hidden; }
         h1, h2, h3 { color: #FFFFFF; font-weight: 700; }
         h2 { font-size: 2.8rem; text-align: center; margin-bottom: 5rem; position: relative; }
@@ -324,36 +325,37 @@
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         
-        // --- CONFIGURATION TSPARTICLES FONCTIONNELLE ---
         tsParticles.load("tsparticles", {
             fpsLimit: 60,
             particles: {
                 number: {
-                    value: 80,
+                    // C'EST ICI : Nombre de particules massivement augmenté
+                    value: 350,
                     density: {
                         enable: true,
                         value_area: 800
                     }
                 },
                 color: {
-                    value: "#9D4EDD"
+                    value: "#9D4EDD" 
                 },
                 shape: {
                     type: "circle"
                 },
                 opacity: {
-                    value: 0.5,
+                    value: 0.8, 
                     random: true
                 },
                 size: {
-                    value: 3,
+                    // C'EST ICI : Taille des particules beaucoup plus grande
+                    value: 7, 
                     random: true
                 },
                 links: {
                     enable: true,
                     distance: 150,
                     color: "#9D4EDD",
-                    opacity: 0.4,
+                    opacity: 0.6, 
                     width: 1
                 },
                 move: {
@@ -362,11 +364,9 @@
                     direction: "none",
                     random: false,
                     straight: false,
-                    out_mode: "bounce", // MODIFIÉ: les particules rebondissent sur les bords
+                    out_mode: "bounce",
                     attract: {
-                        enable: false,
-                        rotateX: 600,
-                        rotateY: 1200
+                        enable: false
                     }
                 }
             },
@@ -396,8 +396,6 @@
             retina_detect: true
         });
 
-
-        // --- Code pour ScrollReveal (inchangé) ---
         const sr = ScrollReveal({
             distance: '60px',
             duration: 2500,
@@ -412,7 +410,6 @@
         sr.reveal('.contact-form', { origin: 'left' });
         sr.reveal('.contact-info', { origin: 'right' });
 
-        // --- Script pour le formulaire de contact (inchangé) ---
         const form = document.getElementById('contact-form');
         const notification = document.getElementById('notification');
 
