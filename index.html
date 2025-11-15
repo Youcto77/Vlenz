@@ -94,12 +94,70 @@
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; position: fixed; width: 100%; top: 0; left: 0; background-color: rgba(18, 18, 28, 0.7); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .logo { font-size: 1.8rem; font-weight: 800; color: #FFFFFF; text-decoration: none; }
         .logo span { color: var(--accent-color); }
-        .nav-links { list-style: none; display: flex; }
+        .nav-links { list-style: none; display: flex; align-items: center; }
         .nav-links li { margin-left: 30px; }
         .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 500; transition: color 0.3s ease; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent-color); transition: width 0.3s ease; }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: #FFFFFF; }
+        .nav-links a:not(.btn-discord)::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .nav-links a:not(.btn-discord):hover::after { width: 100%; }
+        .nav-links a:not(.btn-discord):hover { color: #FFFFFF; }
+
+        /* --- STYLES MODIFIÉS/AJOUTÉS POUR DISCORD --- */
+        .btn-discord { 
+            background-color: #5865F2; 
+            color: #fff !important; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-discord:hover { background-color: #4752C4; transform: translateY(-2px); }
+        
+        #user-profile-container { position: relative; }
+
+        .user-info { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .user-info img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--accent-color); }
+        .user-info span { color: #fff; font-weight: 600; }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            min-width: 180px;
+            z-index: 1001;
+            padding: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            list-style: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            color: var(--text-color) !important;
+            padding: 12px 20px;
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--accent-color);
+            color: #fff !important;
+        }
+        .dropdown-menu a::after { display: none !important; }
+
+        /* ----------------------------------- */
 
         #home { 
             height: 100vh; 
@@ -163,6 +221,7 @@
             .hero-content { flex-direction: column; gap: 40px; }
             .hero-text { text-align: center; }
             .hero-cta { flex-direction: column; align-items: center; }
+            .nav-links { display: none; }
         }
 
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
@@ -214,7 +273,7 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px var(--box-shadow-color-focus); }
         
         .footer { background-color: var(--primary-color); text-align: center; padding: 40px 0; border-top: 1px solid rgba(255, 255, 255, 0.05);}
-   
+
         .notification { position: fixed; bottom: 25px; right: 25px; background-color: var(--accent-color); color: white; padding: 16px 25px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); z-index: 2000; font-weight: 500; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s ease-in-out; }
         .notification.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .notification.error { background-color: #e74c3c; }
@@ -232,6 +291,22 @@
                 <li><a href="#home">Accueil</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#contact">Contact</a></li>
+                
+                <li id="login-container">
+                    <a href="#" id="discord-login-btn" class="btn-discord">Se connecter</a>
+                </li>
+
+                <li id="user-profile-container" style="display: none;">
+                    <div class="user-info" id="user-info-clickable">
+                        <img id="user-avatar" src="" alt="Avatar">
+                        <span id="user-username"></span>
+                    </div>
+                    <ul class="dropdown-menu" id="dropdown-menu">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Paramètres</a></li>
+                        <li><a href="#" id="logout-btn">Déconnexion</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -326,52 +401,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         
+        // --- CONFIGURATION PARTICLES.JS ---
         particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    // C'EST ICI : Nombre de boules fortement réduit
-                    "value": 40, 
-                    "density": { "enable": true, "value_area": 800 }
-                },
-                "color": { "value": "#8A2BE2" },
-                "shape": { "type": "circle" },
-                "opacity": {
-                    // C'EST ICI : Opacité diminuée pour un effet plus subtil
-                    "value": 0.4, 
-                    "random": true 
-                },
-                "size": {
-                    // C'EST ICI : Taille légèrement réduite mais toujours grande
-                    "value": 8, 
-                    "random": true 
-                },
-                "line_linked": { "enable": false },
-                "move": {
-                    "enable": true,
-                    // C'EST ICI : Vitesse ralentie pour un effet plus calme
-                    "speed": 1, 
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "bounce",
-                    "bounce": false
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": false }, "resize": true },
-                "modes": { "repulse": { "distance": 100, "duration": 0.4 }}
-            },
+            "particles": { "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#8A2BE2" }, "shape": { "type": "circle" }, "opacity": { "value": 0.4, "random": true }, "size": { "value": 8, "random": true }, "line_linked": { "enable": false }, "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "bounce", "bounce": false } },
+            "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": false }, "resize": true }, "modes": { "repulse": { "distance": 100, "duration": 0.4 } } },
             "retina_detect": true
         });
 
-        const sr = ScrollReveal({
-            distance: '60px',
-            duration: 2500,
-            delay: 400,
-            reset: false,
-        });
-
+        // --- CONFIGURATION SCROLL REVEAL ---
+        const sr = ScrollReveal({ distance: '60px', duration: 2500, delay: 400, reset: false });
         sr.reveal('.hero-logo', { delay: 500, origin: 'left' });
         sr.reveal('.hero-text', { delay: 600, origin: 'right' });
         sr.reveal('h2', { origin: 'top' });
@@ -379,18 +417,14 @@
         sr.reveal('.contact-form', { origin: 'left' });
         sr.reveal('.contact-info', { origin: 'right' });
 
+        // --- GESTION FORMULAIRE CONTACT ---
         const form = document.getElementById('contact-form');
         const notification = document.getElementById('notification');
-
         async function handleSubmit(event) {
             event.preventDefault();
             const data = new FormData(event.target);
             try {
-                const response = await fetch(event.target.action, {
-                    method: form.method,
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                });
+                const response = await fetch(event.target.action, { method: form.method, body: data, headers: { 'Accept': 'application/json' } });
                 if (response.ok) {
                     notification.textContent = "Message envoyé avec succès !";
                     notification.classList.remove('error');
@@ -400,16 +434,101 @@
                 } else {
                     notification.textContent = "Une erreur s'est produite.";
                     notification.classList.add('error', 'show');
-                     setTimeout(() => { notification.classList.remove('show'); }, 5000);
+                    setTimeout(() => { notification.classList.remove('show'); }, 5000);
                 }
             } catch (error) {
                 notification.textContent = "Une erreur réseau est survenue.";
                 notification.classList.add('error', 'show');
-                 setTimeout(() => { notification.classList.remove('show'); }, 5000);
+                setTimeout(() => { notification.classList.remove('show'); }, 5000);
+            }
+        }
+        form.addEventListener("submit", handleSubmit);
+
+        // ============================================================
+        //               LOGIQUE DE CONNEXION DISCORD
+        // ============================================================
+
+        const clientId = '1438960199397277728'; 
+        const redirectUri = 'https://youcto77.github.io/Vlenz/'; 
+        const backendUrl = 'http://localhost:3000/exchange_code';
+
+        const loginContainer = document.getElementById('login-container');
+        const userProfileContainer = document.getElementById('user-profile-container');
+        const userAvatar = document.getElementById('user-avatar');
+        const userUsername = document.getElementById('user-username');
+        const loginButton = document.getElementById('discord-login-btn');
+        const userInfoClickable = document.getElementById('user-info-clickable');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const logoutButton = document.getElementById('logout-btn');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            exchangeCodeForUserData(code);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        async function exchangeCodeForUserData(code) {
+            try {
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code })
+                });
+                if (!response.ok) throw new Error('Erreur serveur');
+                const userData = await response.json();
+                updateUIForLoggedInUser(userData);
+            } catch (error) {
+                console.error("Erreur connexion:", error);
+                notification.textContent = "Échec de la connexion Discord (Vérifiez server.js)";
+                notification.classList.add('error', 'show');
+                setTimeout(() => { notification.classList.remove('show'); }, 5000);
             }
         }
 
-        form.addEventListener("submit", handleSubmit);
+        function updateUIForLoggedInUser(userData) {
+            const { username, id, avatar } = userData;
+            loginContainer.style.display = 'none';
+            userUsername.textContent = username;
+            userAvatar.src = avatar ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png";
+            userProfileContainer.style.display = 'list-item';
+            
+            notification.textContent = `Bienvenue, ${username} !`;
+            notification.classList.remove('error');
+            notification.classList.add('show');
+            setTimeout(() => { notification.classList.remove('show'); }, 4000);
+        }
+
+        loginButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const scope = 'identify';
+            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`;
+            window.location.href = authUrl;
+        });
+
+        userInfoClickable.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        window.addEventListener('click', () => {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            userProfileContainer.style.display = 'none';
+            dropdownMenu.classList.remove('show');
+            loginContainer.style.display = 'block';
+            
+            notification.textContent = "Vous avez été déconnecté.";
+            notification.classList.remove('error');
+            notification.classList.add('show');
+            setTimeout(() => { notification.classList.remove('show'); }, 4000);
+        });
     });
 </script>
 </body>
